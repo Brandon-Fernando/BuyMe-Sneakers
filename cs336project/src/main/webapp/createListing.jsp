@@ -44,8 +44,8 @@
 			<td> 
 				<select name="gender">
 					<option value="Blank">---</option>
-					<option value="mens">Mens</option>
-					<option value="womens">Womens</option>
+					<option value="Mens">Mens</option>
+					<option value="Womens">Womens</option>
 				</select>
 			</td>
 		</tr>
@@ -80,11 +80,11 @@
 		</tr>
 		
 		<tr>
-			<td>Starting Price</td><td><input type="number" name="price" min="0" value="0" step=".01"></td>
+			<td>Starting Price</td><td><input type="number" name="price" min="0.01" value="0" step="0.01"></td>
 		</tr>
 		
 		<tr>
-			<td>Minimum Price (hidden)</td><td><input type="number" name="minPrice" min="0.01" value="0" step=".01"></td>
+			<td>Minimum Price (hidden & optional)</td><td><input type="number" name="minPrice" min="0" value="0" step="0.01"></td>
 		</tr>
 		
 		<tr>
@@ -96,12 +96,24 @@
 			<td colspan="2" style="text-align: center"><input type="submit" value="Create Listing" style="width: 100%"></td>
 		</tr>
 		
+		<tr>
+		<%
+		String error = request.getParameter("error");
+		if(error != null && error.equals("empty")){
+		%>
+		<td colspan="2" style="text-align: center"><div style="color: red;">Please fill out all fields.</div></td>
+		<%
+		}	
+		%>
+		</tr>
 		
 		<tr>
 			<td colspan="2" style="text-align: center"><a href="account.jsp">Back</a>
 		</tr>
 		</table>
 		</form>
+		
+		
 	</div>
 
 </body>

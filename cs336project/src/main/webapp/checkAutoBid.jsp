@@ -24,9 +24,17 @@
 		
 		String bidLimit = request.getParameter("bidLimit");
 		String increment = request.getParameter("increment");
-		
 		String listID = request.getParameter("listID");
 		
+		
+		if(bidLimit == null || bidLimit.trim().isEmpty()){
+			response.sendRedirect("viewListing.jsp?listID=" + listID + "&error=emptyBidLimit");
+			return;
+		}
+		if(increment == null || increment.trim().isEmpty()){
+			response.sendRedirect("viewListing.jsp?listID=" + listID + "&error=emptyIncrement");
+			return;
+		}
 		
 		String selectQuery = "SELECT startingPrice FROM createListing WHERE listID=(?)";
 		PreparedStatement ps = con.prepareStatement(selectQuery);
@@ -35,7 +43,13 @@
 		result.next();
 		String price = result.getString(1);
 		
+		Double bidLimitAmount = Double.parseDouble(bidLimit);
+		Double priceAmount = Double.parseDouble(price);
 		
+		if(bidLimitAmount <= priceAmount){
+			response.sendRedirect("viewListing.jsp?listID=" + listID + "&error=smallerLimit");
+			return;
+		}
 		
 		String insert = "INSERT INTO autoBids(username, listID, increment, currentPrice, bidLimit) " +
 		"VALUES (?, ?, ?, ?, ?) " + 

@@ -27,7 +27,22 @@
 		String newMinPrice = request.getParameter("minPrice");
 		String newDateTime = request.getParameter("dateTime");
 		
-		
+		if(newName == null || newName.trim().isEmpty()){
+			response.sendRedirect("createListing.jsp?error=empty");
+			return;
+		}else if(newBrand == null || newBrand.equals("Blank1")){
+			response.sendRedirect("createListing.jsp?error=empty");
+			return;
+		}else if(newGender == null || newGender.equals("Blank")){
+			response.sendRedirect("createListing.jsp?error=empty");
+			return;
+		}else if(newSize == null || newSize.equals("Blank2")){
+			response.sendRedirect("createListing.jsp?error=empty");
+			return;
+		}else if(newDateTime == null || newDateTime.trim().isEmpty()){
+			response.sendRedirect("createListing.jsp?error=empty");
+			return;
+		}
 		
 		String insert = "INSERT INTO createListing(name, brand, gender, size, startingPrice, minPrice, closingDateTime)"
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?)";

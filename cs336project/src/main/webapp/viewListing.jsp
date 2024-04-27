@@ -40,29 +40,28 @@
 		
 		ResultSet result = ps.executeQuery();
 		
+		
+		selectQuery = "SELECT * FROM createListing WHERE brand = ? AND listID != ?";
+        PreparedStatement ps3 = con.prepareStatement(selectQuery);
+        ps3.setString(1, brand);
+        ps3.setInt(2, listID);
+        ResultSet simItems = ps3.executeQuery();
+		
+		
 		Statement ps2 = con.createStatement();
-        /* ResultSet bidhist = ps2.executeQuery("SELECT b.bidID, price, username, dateTime from bids b "+
-        		"LEFT JOIN onListing ol on ol.bidID = b.bidID LEFT JOIN places p on p.bidID = ol.bidID " +
-        		"WHERE listID= " +listID + ";"); */
         ResultSet bidhist = ps2.executeQuery("SELECT b.bidID, b.price, p.username, b.dateTime, ol.listID " +
         			"FROM bids b " +
         			"LEFT JOIN onListing ol ON ol.bidID = b.bidID " +
         			"LEFT JOIN places p ON p.bidID = b.bidID " +
         			"WHERE ol.listID = " + listID);
         
-        selectQuery = "SELECT * FROM createListing WHERE brand = ? AND listID != ?";
-        PreparedStatement ps3 = con.prepareStatement(selectQuery);
-        ps3.setString(1, brand);
-        ps3.setInt(2, listID);
-        ResultSet simItems = ps3.executeQuery();
         
         
-        selectQuery = "SELECT * FROM autoBids WHERE listID = " + listID;
-        PreparedStatement ps4 = con.prepareStatement(selectQuery);
-       	ResultSet test = ps4.executeQuery();
+        
+        
 		
 	%>
-	
+	<h2>Details</h2>
 	<table style="border-collapse: collapse; width: 100%">
 	 	<tr> 
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Posted By</td>
@@ -88,7 +87,7 @@
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("brand")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("gender")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("size")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("startingPrice")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= String.format("%.2f", result.getDouble("startingPrice"))%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("closingDateTime")%></td>
 	 		
 	 	</tr>
@@ -101,7 +100,7 @@
    			<input type="hidden" name="listID" value="<%= listID %>">
    			<input type="hidden" name="price" value="<%= price %>">
    			<tr>
-   				<td>Bid Amount</td><td><input type="number" name="bidAmount"></td>
+   				<td>Bid Amount</td><td><input type="number" name="bidAmount" min="0.01" value="0" step="0.01"></td>
    			</tr>
    			
    			<tr>
@@ -110,10 +109,22 @@
    		</table>
    </div>
    </form>
+   <%
+   		String error = request.getParameter("error");
+   		if(error != null && error.equals("emptyBid")){
+   %>
+   			<div style="text-align: center; color: red; margin-bottom: 10px;">Please input a value for bid.</div>
+   <% 
+   		}else if(error != null && error.equals("smallerBid")){
+   %>
+   			<div style="text-align: center; color: red; margin-bottom: 10px;">Please input a bid greater than the current price.</div>
+   <%
+   		}
+   %>
    
    <h2 style="text-align: center">Place an automatic bid</h2>
    <div style="text-align: center">
-   <form method="post" action="checkAutoBid.jsp" style="text-align:center"" align="center">
+   <form method="post" action="checkAutoBid.jsp" style="text-align:center">
    		<table align="center">
    			<input type="hidden" name="listID" value="<%= listID %>">
    			<input type="hidden" name="price" value="<%= price %>">
@@ -133,6 +144,22 @@
    </div>
    </form>
    
+   <%
+   		if(error != null && error.equals("emptyBidLimit")){
+   %>
+   		<div style="text-align: center; color: red; margin-bottom: 10px;">Please input a value for bid limit.</div>
+   <%
+   		}else if(error != null && error.equals("emptyIncrement")){
+   %>
+   		<div style="text-align: center; color: red; margin-bottom: 10px;">Please input a value for increment.</div>
+   <% 
+   		}else if(error != null && error.equals("smallerIncrement")){
+   %>
+   		<div style="text-align: center; color: red; margin-bottom: 10px;">Please input a limit greater than the current price.</div>
+   <% 
+   		}
+   %>
+   
    <h2 style="text-align: center">Bid History</h2>
    <div style="text-align: center">
    		<table style="border-collapse: collapse; width: 50%" align="center">
@@ -143,7 +170,7 @@
    		</tr>
    		<% while(bidhist.next()){ %>
    		<tr><td style="border: 3px solid #dddddd; text-align: left; padding: 8px;"><%= bidhist.getString("username") %></td>
-   			<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;"><%= bidhist.getDouble("price") %></td>
+   			<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;"><%= String.format("%.2f", bidhist.getDouble("price")) %></td>
    			<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;"><%= bidhist.getString("dateTime") %></td>
    		</tr>
    		<%} %>
@@ -185,27 +212,7 @@
 	 	
    </div>
    
-   <%-- <table style="border-collapse: collapse; width: 100%">
-	 	<tr> 
-	 		
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">User</td>
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">ListID</td>
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Increment</td>
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Current Price</td>
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Bid Limit</td>
-	 	</tr>
-	 	<%while(test.next()){ %>
-	 	<tr>
-	 		
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= test.getString("username")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= test.getInt("listID")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= test.getDouble("increment")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= test.getDouble("currentPrice")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= test.getDouble("bidLimit")%></td>
-	 		
-	 	</tr>
-	 	<%} %>
-	 	</table> --%>
+   
    <%
 		}
 	db.closeConnection(con);

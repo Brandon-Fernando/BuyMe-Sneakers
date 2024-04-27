@@ -22,6 +22,11 @@
 		String listID = request.getParameter("listID");
 		String bid = request.getParameter("bidAmount");
 		
+		if (bid == null || bid.trim().isEmpty()) {
+            response.sendRedirect("viewListing.jsp?listID=" + listID + "&error=emptyBid");
+            return; // Stop further execution
+        }
+		
 		String selectQuery = "SELECT startingPrice FROM createListing WHERE listID = ?";
 		PreparedStatement ps = con.prepareStatement(selectQuery);
 		ps.setString(1, listID);
@@ -38,7 +43,12 @@
 		ps2.setString(1, listID);
 		ResultSet getAutoBid = ps2.executeQuery();
 		
-		if(getAutoBid.next()){ //check if there exists an autobid for this listing
+		
+		if(bidAmount <= currentPrice){
+			response.sendRedirect("viewListing.jsp?listID=" + listID + "&error=smallerBid");
+            return; // Stop further execution
+		}else{
+			if(getAutoBid.next()){ //check if there exists an autobid for this listing
 			double autoBidLimit = getAutoBid.getDouble("bidLimit");
 			double autoBidIncrement = getAutoBid.getDouble("increment");
 				
@@ -180,6 +190,9 @@
 			
 			response.sendRedirect("viewListing.jsp?listID=" + listID);
 		}
+	}
+		
+		
 	} catch(SQLException e){
 		out.print(e);
 	}
