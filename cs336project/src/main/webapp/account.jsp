@@ -46,7 +46,7 @@
 		ResultSet limitUnder = ps2.executeQuery();
 		
 		
-		selectQuery = "SELECT cl.name "
+		selectQuery = "SELECT cl.name, cl.brand "
 				+ "FROM places p "
 				+ "INNER JOIN onListing ol ON ol.bidID = p.bidID "
 				+ "INNER JOIN bids b ON b.bidID = ol.bidID "
@@ -59,7 +59,20 @@
 		PreparedStatement ps3 = con.prepareStatement(selectQuery);
 		ps3.setString(1, username);
 		ResultSet winner = ps3.executeQuery();
-	
+		
+		
+		selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(b.price) as userBid "
+				+ "FROM places p "
+				+ "INNER JOIN onListing ol ON ol.bidID = p.bidID "
+				+ "INNER JOIN bids b ON b.bidID = ol.bidID "  
+				+ "INNER JOIN createListing cl ON cl.listID = ol.listID "
+			 	+ "WHERE p.username = ? AND cl.status = 'Closed' "
+			 	+ "GROUP BY ol.listID "
+			 	+ "HAVING userBid < cl.startingPrice";
+		PreparedStatement ps4 = con.prepareStatement(selectQuery);
+		ps4.setString(1, username);
+		ResultSet loser = ps4.executeQuery();
+		
 	%> 
 	<div style="text-align: center">
 		<h1>Hello, <%=session.getAttribute("user")%>!</h1>
@@ -102,10 +115,21 @@
 		%>
 		<tr>
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
-			You won the <%=winner.getString(1) %>!
+			Congrats! You won the <%=winner.getString(2)%> <%=winner.getString(1) %>!
 			</td>
 		</tr>
 		<% }%>
+		
+		<%
+		while(loser.next()){
+		%>
+		<tr>
+			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
+			Sorry, you lost the <%=loser.getString(2)%> <%=loser.getString(1) %>.
+			</td>
+		</tr>
+		<%} %>
+		
 	</table>
 	
 	<%

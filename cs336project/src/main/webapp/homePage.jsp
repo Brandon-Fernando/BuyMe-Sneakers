@@ -27,7 +27,33 @@
     
     <hr width="100%" size = "2">
     
+    <div class="container">
+    	<form class="form-inline" method="post" action="search.jsp">
+    		<input type="text" name="search" class="form-control" placeholder="Search listings here">
+    		<button type="submit" name="save" class="btn btn-primary">Search</button>
+    	</form>
+    </div>
+    
+    
+    <br>
     <h2>All Listings</h2>
+    
+    <form class="inline" method="post" action="homePage.jsp">
+    	<select name="sortByOptions" id="sortByOptions">
+    		<option value="None">---</option>
+    		<option value="Name">Name</option>
+    		<option value="Nike">Nike</option>
+    		<option value="Adidas">Adidas</option>
+    		<option value="Jordan">Jordan</option>
+    		<option value="lowToHigh">Price (Low-High)</option>
+    		<option value="highToLow">Price (High-Low)</option>
+    		<option value="open">Status (Open)</option>
+    		<option value="closed">Status (Closed)</option>
+    	</select>
+    	<button type="submit" name="sortBy">Sort By</button>
+    </form>
+    <br>
+    
    <%
    try{
 	   ApplicationDB db = new ApplicationDB();
@@ -37,6 +63,35 @@
 	   
 	   Statement stmt = con.createStatement();
 	   ResultSet result = stmt.executeQuery(selectQuery);
+	   
+	   
+	   String sortOption = request.getParameter("sortByOptions");
+	   String sortQuery = null;
+	   if(sortOption == null){
+		   sortQuery = "SELECT * FROM createListing";
+	   }else if(sortOption.equals("Name")){
+		   sortQuery = "SELECT * FROM createListing ORDER BY name";
+	   }else if(sortOption.equals("Nike")){
+		   sortQuery = "SELECT * FROM createListing WHERE brand = 'Nike'";
+	   }else if(sortOption.equals("Adidas")){
+		   sortQuery = "SELECT * FROM createListing WHERE brand = 'Adidas'";
+	   }else if(sortOption.equals("Jordan")){
+		   sortQuery = "SELECT * FROM createListing WHERE brand= 'Jordan'";
+	   }else if(sortOption.equals("lowToHigh")){
+		   sortQuery = "SELECT * FROM createListing ORDER BY startingPrice";
+	   }else if(sortOption.equals("highToLow")){
+		   sortQuery = "SELECT * FROM createListing ORDER BY startingPrice DESC";
+	   }else if(sortOption.equals("open")){
+		   sortQuery = "SELECT * FROM createListing WHERE status = 'Open'";
+	   }else if(sortOption.equals("closed")){
+		   sortQuery = "SELECT * FROM createListing WHERE status = 'Closed'";
+	   }else{
+		   sortQuery = "SELECT * FROM createListing";
+	   }
+	   
+	   
+	   			   
+	   
 	   
 	   java.sql.Timestamp currentTimestamp = new Timestamp(new java.util.Date().getTime());
 		   
@@ -67,21 +122,28 @@
 	 				ps.setInt(1, listID);
 	 				ps.executeUpdate();
 	 			}
+	 		}
+	 		
+	 		PreparedStatement ps = con.prepareStatement(sortQuery);
+	 		ResultSet getListings = ps.executeQuery();
+	 		
+	 		while(getListings.next()){
+	 			
 	 	%>
 	 	<tr>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="viewListing.jsp?listID=<%= result.getInt("listID") %>&brand=<%= result.getString("brand") %>">View</a></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("status")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("name")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("brand")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("gender")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("size")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= String.format("%.2f", result.getDouble("startingPrice"))%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= result.getString("closingDateTime")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="viewListing.jsp?listID=<%= getListings.getInt("listID") %>&brand=<%= getListings.getString("brand") %>">View</a></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("status")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("name")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("brand")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("gender")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("size")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= String.format("%.2f", getListings.getDouble("startingPrice"))%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("closingDateTime")%></td>
 	 	</tr>
 	 	<% } %>
 	 </table>
 	 
-	 <h2 style="text-align:center">Notifications</h2>
+	 
 	 
 	 
 	 
@@ -91,7 +153,7 @@
 	   out.print(e);
    }
    
-   //if date1.compareTo(date2) < 0) date 1 is before date2
+   
    %>
    
     

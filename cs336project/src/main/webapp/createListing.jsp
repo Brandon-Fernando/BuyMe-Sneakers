@@ -84,7 +84,7 @@
 		</tr>
 		
 		<tr>
-			<td>Minimum Price (hidden & optional)</td><td><input type="number" name="minPrice" min="0" value="0" step="0.01"></td>
+			<td>Minimum Price (hidden and optional)</td><td><input type="number" name="minPrice" min="0" value="0" step="0.01"></td>
 		</tr>
 		
 		<tr>
