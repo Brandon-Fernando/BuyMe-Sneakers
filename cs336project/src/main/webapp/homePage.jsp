@@ -27,7 +27,7 @@
     
     <hr width="100%" size = "2">
     
-    <div class="container">
+    <div class="container" style="text-align: center">
     	<form class="form-inline" method="post" action="search.jsp">
     		<input type="text" name="search" class="form-control" placeholder="Search listings here">
     		<button type="submit" name="save" class="btn btn-primary">Search</button>
@@ -42,6 +42,8 @@
     	<select name="sortByOptions" id="sortByOptions">
     		<option value="None">---</option>
     		<option value="Name">Name</option>
+    		<option value="Mens">Mens</option>
+    		<option value="Womens">Womens</option>
     		<option value="Nike">Nike</option>
     		<option value="Adidas">Adidas</option>
     		<option value="Jordan">Jordan</option>
@@ -71,6 +73,10 @@
 		   sortQuery = "SELECT * FROM createListing";
 	   }else if(sortOption.equals("Name")){
 		   sortQuery = "SELECT * FROM createListing ORDER BY name";
+	   }else if(sortOption.equals("Mens")){
+		   sortQuery = "SELECT * FROM createListing WHERE gender = 'Mens'";
+	   }else if(sortOption.equals("Womens")){
+		   sortQuery = "SELECT * FROM createListing WHERE gender = 'Womens'";
 	   }else if(sortOption.equals("Nike")){
 		   sortQuery = "SELECT * FROM createListing WHERE brand = 'Nike'";
 	   }else if(sortOption.equals("Adidas")){
