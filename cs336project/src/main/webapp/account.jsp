@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Account</title>
 </head>
 <body>
 
@@ -73,13 +73,25 @@
 		ps4.setString(1, username);
 		ResultSet loser = ps4.executeQuery();
 		
+		
+		selectQuery = "SELECT cl.brand, cl.name, cl.startingPrice "
+				+ "FROM createListing cl " 
+				+ "INNER JOIN interests i ON cl.name LIKE CONCAT('%', i.interests, '%') "
+				+ "WHERE cl.status = 'Open' AND i.username=?";
+		PreparedStatement ps5 = con.prepareStatement(selectQuery);
+		ps5.setString(1, username);
+		ResultSet notifyInterests = ps5.executeQuery();
+		
 	%> 
 	<div style="text-align: center">
 		<h1>Hello, <%=session.getAttribute("user")%>!</h1>
 
 		<a href="homePage.jsp">Home</a> |
     	<a href="createListing.jsp">Create Listing</a> |
+    	<a href ='interests.jsp'>Set Your Interests</a> |
+    	<a href ='viewUsers.jsp'>View Other Users</a> |
     	<a href='logout.jsp'>Log out</a>
+    	
 	</div>
 	
 	<hr width="100%" size="2">
@@ -127,6 +139,16 @@
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
 			Sorry, you lost the <%=loser.getString(2)%> <%=loser.getString(1) %>.
 			</td>
+		</tr>
+		<%} %>
+		
+		<%
+		while(notifyInterests.next()){
+		%>
+		<tr>
+			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
+			Your interest is now up for auction!
+			<p><%= notifyInterests.getString(1) %> <%=notifyInterests.getString(2) %> $<%= notifyInterests.getString(3) %></p>
 		</tr>
 		<%} %>
 		
