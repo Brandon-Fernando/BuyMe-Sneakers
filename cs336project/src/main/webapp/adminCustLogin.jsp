@@ -12,18 +12,16 @@
 	</head>
 <body>
 	<div style="text-align: center">
-			<h1>Login</h1>
-			<form action="checkLoginDetails.jsp" method="POST">
-				Username: <input type="text" name="username"/> <br/>
+		<h1>Administrative Staff Member/Customer Representatives Login</h1>
+			<form action="checkAdminCustLoginDetails.jsp" method="POST">
+				Employee ID: <input type="text" name="employeeID"/> <br/>
 				Password:<input type="password" name="password"/> <br/>
-				<input type="submit" value="Login"  style="width: 16%"/>
+				<input type="submit" value="Login"  style="width: 17%"/>
 			</form>
 			
-			<p>Don't have an account? <a href='register.jsp'>Register</a></p>
+			<br>
 			
-		<p> Administrative Staff Member/Customer Representatives <a href="adminCustLogin.jsp">Log In</a>
-		
-		
+			<a href="login.jsp">Back</a>
 		
 	
 	</div>
