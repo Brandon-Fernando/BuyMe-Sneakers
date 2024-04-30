@@ -32,6 +32,11 @@
 		ApplicationDB db = new ApplicationDB();
 		Connection con = db.getConnection();
 		
+		String username = (String) session.getAttribute("user");
+		if(username == null){
+			response.sendRedirect("login.jsp");
+		}
+		
 		String searched = request.getParameter("search");
 		
 		String sortOption = request.getParameter("sortByOptions");

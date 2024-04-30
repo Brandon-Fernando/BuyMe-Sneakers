@@ -61,6 +61,11 @@
 	   ApplicationDB db = new ApplicationDB();
 	   Connection con = db.getConnection();
 	   
+	   String username = (String) session.getAttribute("user");
+		if(username == null){
+			response.sendRedirect("login.jsp");
+		}
+	   
 	   String selectQuery = "SELECT * FROM createListing";
 	   
 	   Statement stmt = con.createStatement();

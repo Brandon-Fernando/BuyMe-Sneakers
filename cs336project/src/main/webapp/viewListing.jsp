@@ -28,6 +28,11 @@
 		ApplicationDB db = new ApplicationDB();
 		Connection con = db.getConnection();
 		
+		String username = (String) session.getAttribute("user");
+		if(username == null){
+			response.sendRedirect("login.jsp");
+		}
+		
 		
 		String listID = request.getParameter("listID");
 		String currentUser = (String) session.getAttribute("user");

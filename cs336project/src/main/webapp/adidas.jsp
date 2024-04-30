@@ -36,6 +36,11 @@
 	   ApplicationDB db = new ApplicationDB();
 	   Connection con = db.getConnection();
 	   
+	   String username = (String) session.getAttribute("user");
+		if(username == null){
+			response.sendRedirect("login.jsp");
+		}
+	   
 	   String selectQuery = "SELECT * FROM createListing WHERE brand = ?";
 	   PreparedStatement ps = con.prepareStatement(selectQuery);
 	   ps.setString(1, "Adidas");

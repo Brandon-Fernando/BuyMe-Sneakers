@@ -34,6 +34,11 @@
 	ApplicationDB db = new ApplicationDB();
 	Connection con = db.getConnection();
 	
+	String username = (String) session.getAttribute("user");
+	if(username == null){
+		response.sendRedirect("login.jsp");
+	}
+	
 	String userSearch = request.getParameter("searchUsers");
 	
 	String selectListings = "SELECT cl.name, cl.listID, cl.brand, cl.status "

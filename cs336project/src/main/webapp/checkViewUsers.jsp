@@ -17,6 +17,9 @@
 	Connection con = db.getConnection();
 	
 	String username = (String) session.getAttribute("user");
+	if(username == null){
+		response.sendRedirect("login.jsp");
+	}
 	String interest = request.getParameter("interest");
 	
 	String insertQuery = "INSERT INTO interests(username, interests) VALUES(?, ?)";

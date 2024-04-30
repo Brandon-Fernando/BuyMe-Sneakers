@@ -20,6 +20,9 @@
 	Connection con = db.getConnection();
 	
 	String username = (String) session.getAttribute("user");
+	if(username == null){
+		response.sendRedirect("login.jsp");
+	}
 	
 	String selectQuery = "SELECT interests FROM interests WHERE username=?";
 	PreparedStatement ps = con.prepareStatement(selectQuery);

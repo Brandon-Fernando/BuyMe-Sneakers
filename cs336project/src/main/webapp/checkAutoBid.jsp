@@ -21,6 +21,9 @@
 		Statement stmt = con.createStatement();
 		
 		String username = (String) session.getAttribute("user");
+		if(username == null){
+			response.sendRedirect("login.jsp");
+		}
 		
 		String bidLimit = request.getParameter("bidLimit");
 		String increment = request.getParameter("increment");

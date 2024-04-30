@@ -10,15 +10,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<%-- <%
-		ApplicationDB db = new ApplicationDB();
-		Connection con = db.getConnection(); 
-		String username = (String) session.getAttribute("username");
-		if(username == null){
-			response.sendRedirect("login.jsp");
-		}
-	%> --%>
+	<%
+	String username = (String) session.getAttribute("user");
+	if(username == null){
+		response.sendRedirect("login.jsp");
+	}
+	%>
 	<h1 style="text-align: center">Create Listing</h1>
 	<div style="text-align: center">
 		<form method="post" action="checkListing.jsp" align="center">

@@ -17,6 +17,9 @@
 		Connection con = db.getConnection();
 		
 		String username = (String) session.getAttribute("user");
+		if(username == null){
+			response.sendRedirect("login.jsp");
+		}
 		
 		
 		String selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(b.price) as userBid "
