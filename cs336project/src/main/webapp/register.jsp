@@ -11,14 +11,16 @@
 	<title>Register Form</title>
 	</head>
 <body>
-	<header> 
+	<div style="text-align: center">
 		<h1>Create Account</h1>
-	</header>
-	<form action="registerAccount.jsp" method="POST">
-		Username: <input type="text" name="username"/> <br/>
-		Password:<input type="password" name="password"/> <br/>
-		<input type="submit" value="Register"/>
-	</form>
+		<form action="registerAccount.jsp" method="POST">
+			Username: <input type="text" name="username"/> <br/>
+			Password:<input type="password" name="password"/> <br/>
+			<input type="submit" value="Register" style="width: 16%"/>
+		</form>
+		<br>
+		<a href="login.jsp">Back</a>
+	</div>
 	
 </body>
 </html>

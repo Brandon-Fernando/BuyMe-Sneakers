@@ -56,7 +56,7 @@
 		ps2.setString(1, listID);
 		ResultSet getUser = ps2.executeQuery();
 		
-		String username = null;
+		//String username = null;
 		
 		
 		while(getListing.next()){

@@ -16,7 +16,7 @@
 			<form action="checkAdminCustLoginDetails.jsp" method="POST">
 				Employee ID: <input type="text" name="employeeID"/> <br/>
 				Password:<input type="password" name="password"/> <br/>
-				<input type="submit" value="Login"  style="width: 17%"/>
+				<input type="submit" value="Login"  style="width: 16%"/>
 			</form>
 			
 			<br>

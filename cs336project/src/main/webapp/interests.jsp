@@ -48,7 +48,7 @@
 	
 	<table align="center" style="width: 400px; max-width:400px; margin-top: 20px;">
 		<tr>
-			<td style="border: 3px solid #dddddd; text-align: center; padding 1px;"><h3>Your Interests</h3></td>
+			<td style="border: 3px solid #dddddd; text-align: center; padding: 1px;"><h3>Your Interests</h3></td>
 		</tr>
 		<%while(getInterests.next()){ %>
 		<tr>
