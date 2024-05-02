@@ -30,9 +30,11 @@
 	
 	if (rs.next()) {
 		session.setAttribute("employeeID", eID); // the username will be stored in the session
+        session.setAttribute("userRole", "admin");
 		response.sendRedirect("adminHomePage.jsp");
 	}else if (rs2.next()) {
 		session.setAttribute("employeeID", eID); // the username will be stored in the session
+        session.setAttribute("userRole", "custRep");
 		response.sendRedirect("repHomePage.jsp");
 	} else {
 		out.println("Invalid username or password <a href='adminCustLogin.jsp'>try again</a>");

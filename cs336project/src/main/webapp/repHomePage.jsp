@@ -18,6 +18,7 @@
 	<h1 style="text-align: center"> BuyMe Sneakers Customer Representative Home Page</h1>
 	<nav style="text-align: center">
 		<a href="repHomePage.jsp">Home</a> |
+		<a href="questions.jsp">Q & A</a> |
 		<a href="editAccounts.jsp">Edit Accounts</a> |
 		<a href="adminHomePage.jsp">Edit Listings/Bids</a> |
 		<a href="logout.jsp">Log Out</a>

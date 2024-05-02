@@ -90,6 +90,7 @@
 		<h1>Hello, <%=session.getAttribute("user")%>!</h1>
 
 		<a href="homePage.jsp">Home</a> |
+		<a href="questions.jsp">Q & A</a> |
     	<a href="createListing.jsp">Create Listing</a> |
     	<a href ='interests.jsp'>Set Your Interests</a> |
     	<a href ='viewUsers.jsp'>View Other Users</a> |
