@@ -31,6 +31,7 @@
 		String newPrice = request.getParameter("price");
 		String newMinPrice = request.getParameter("minPrice");
 		String newDateTime = request.getParameter("dateTime");
+		String newOriginalPrice = request.getParameter("price");
 		
 		if(newName == null || newName.trim().isEmpty()){
 			response.sendRedirect("createListing.jsp?error=empty");
@@ -49,8 +50,8 @@
 			return;
 		}
 		
-		String insert = "INSERT INTO createListing(name, brand, gender, size, startingPrice, minPrice, closingDateTime)"
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?)";
+		String insert = "INSERT INTO createListing(name, brand, gender, size, startingPrice, minPrice, closingDateTime, originalPrice)"
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		PreparedStatement ps = con.prepareStatement(insert);
 		
@@ -61,6 +62,7 @@
 		ps.setString(5, newPrice);
 		ps.setString(6, newMinPrice);
 		ps.setString(7, newDateTime);
+		ps.setString(8, newOriginalPrice);
 		ps.executeUpdate();
 		
 		String newUsername = (String) session.getAttribute("user");

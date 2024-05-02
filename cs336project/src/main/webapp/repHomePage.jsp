@@ -20,7 +20,7 @@
 		<a href="repHomePage.jsp">Home</a> |
 		<a href="questions.jsp">Q & A</a> |
 		<a href="editAccounts.jsp">Edit Accounts</a> |
-		<a href="adminHomePage.jsp">Edit Listings/Bids</a> |
+		<a href="editListingsBids.jsp">Edit Listings/Bids</a> |
 		<a href="logout.jsp">Log Out</a>
 	</nav>
 	

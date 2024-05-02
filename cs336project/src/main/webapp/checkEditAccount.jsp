@@ -24,22 +24,23 @@
 		
 		
 		if(delete != null && delete.equals("true")){
+			String deleteBidQuery = "DELETE FROM bids WHERE bidID=("
+					+ "SELECT p.bidID "
+					+ "FROM places p "
+					+ "WHERE username=?)";
+			PreparedStatement ps2 = con.prepareStatement(deleteBidQuery);
+			ps2.setString(1, oldUsername);
+			ps2.executeUpdate(); 
+			
+			
 			String deleteQuery = "DELETE FROM users WHERE username=?";
 			PreparedStatement ps = con.prepareStatement(deleteQuery);
 			ps.setString(1, oldUsername);
 			ps.executeUpdate();
 			
 			
-			String deleteBidsQuery = "DELETE FROM bids WHERE username="
-					+ "(SELECT p.username " 
-					+ "FROM places p"
-					+ "INNER JOIN onListing ol ON ol.bidID = p.bidID "
-					+ "INNER JOIN createListing cl. ON cl.listID = ol.listID "
-					+ "WHERE p.username = ?)";
-			PreparedStatement ps2 = con.prepareStatement(deleteBidsQuery);
-			ps2.setString(1, oldUsername);
-			ps2.executeUpdate();
-			response.sendRedirect("editAccounts.jsp");
+			
+						
 			
 		}else{
 			if(newPassword != null && !newPassword.isBlank()){

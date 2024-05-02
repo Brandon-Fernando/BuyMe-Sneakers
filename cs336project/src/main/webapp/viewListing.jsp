@@ -42,6 +42,9 @@
 		ps.setString(1, listID);
 		ResultSet getListing = ps.executeQuery();
 		
+		
+		
+		
 		String name = null; //2
 		String brand = null; //3
 		String gender = null; //4
@@ -56,7 +59,53 @@
 		ps2.setString(1, listID);
 		ResultSet getUser = ps2.executeQuery();
 		
-		//String username = null;
+		
+		
+		String ogPriceQuery = "SELECT originalPrice FROM createListing WHERE listID=?";
+		PreparedStatement psOG = con.prepareStatement(ogPriceQuery);
+		psOG.setString(1, listID);
+		ResultSet getOGprice = psOG.executeQuery();
+		Double ogPrice = null;
+		while(getOGprice.next()){
+			ogPrice = getOGprice.getDouble(1);
+		}
+		
+		
+		String highestPriceQuery ="SELECT MAX(b.price) "
+				+ "FROM bids b "
+				+ "INNER JOIN onListing ol ON ol.bidID = b.bidID "
+				+ "WHERE listID=?";
+		PreparedStatement psHighestPrice = con.prepareStatement(highestPriceQuery);
+		psHighestPrice.setString(1, listID);
+		ResultSet getHighestPrice = psHighestPrice.executeQuery();
+		Double highest = null;
+		while(getHighestPrice.next()){
+			highest = getHighestPrice.getDouble(1);
+		}
+		
+		String currentPriceQuery = "SELECT startingPrice FROM createListing WHERE listID=?";
+		PreparedStatement psCurrentPrice = con.prepareStatement(currentPriceQuery);
+		psCurrentPrice.setString(1, listID);
+		ResultSet getCurrentPrice = psCurrentPrice.executeQuery();
+		Double currentPrice = null;
+		while(getCurrentPrice.next()){
+			currentPrice = getCurrentPrice.getDouble(1);
+		} 
+		
+		if(highest < currentPrice && highest > 0){
+			String updatePriceQuery = "UPDATE createListing SET startingPrice=? WHERE listID=?";
+			PreparedStatement psUpdate = con.prepareStatement(updatePriceQuery);
+			psUpdate.setDouble(1, highest);
+			psUpdate.setString(2, listID);
+			psUpdate.executeUpdate();
+		}else if(highest < currentPrice || highest == null || highest == 0.0){
+			String updatePriceQuery = "UPDATE createListing SET startingPrice=? WHERE listID=?";
+			PreparedStatement psUpdate = con.prepareStatement(updatePriceQuery);
+			psUpdate.setDouble(1, ogPrice);
+			psUpdate.setString(2, listID);
+			psUpdate.executeUpdate();
+		} 
+		
 		
 		
 		while(getListing.next()){
@@ -73,8 +122,8 @@
 		while(getUser.next()){
 			username = getUser.getString(1);
 		}
-		
 		%>
+
 		<div style="text-align: center">
 			<h1 style="margin: 0;"><%= brand %> <%= name %></h1>
 			<h5 style="margin: 5px 0;">Posted By: <%=username %></h5>
@@ -187,6 +236,10 @@
    				PreparedStatement ps3 = con.prepareStatement(historyQuery);
    				ps3.setString(1, listID);
    				ResultSet bidHist = ps3.executeQuery();
+   				
+   				
+   			
+   				
    			%>
    			<table style="border-collapse: collapse; width: 50%" align="center">
 		   		<tr>
@@ -213,6 +266,7 @@
 				ps4.setString(1, listID);
 				ps4.setString(2, brand);
 				ResultSet simItems = ps4.executeQuery();
+				
 			%>
 				<table style="border-collapse: collapse; width: 100%">
 			 	<tr> 
