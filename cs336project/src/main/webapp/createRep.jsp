@@ -7,12 +7,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Create Customer Representative</title>
 </head>
 <body>
 	<h1 style="text-align: center">Create Customer Representative Accounts</h1>
 	<nav style="text-align: center">
 		<a href="adminHomePage.jsp">Home</a> |
+		<a href="questions.jsp">Q & A</a> |
 		<a href="createRep.jsp">Create Customer Representative Accounts</a> |
 		<a href="adminHomePage.jsp">Generate Sales Report</a> |
 		<a href="logout.jsp">Log Out</a>

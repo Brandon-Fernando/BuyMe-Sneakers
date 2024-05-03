@@ -51,6 +51,71 @@ String userRole = (String) session.getAttribute("userRole");
     <% } %>
 </div>
 
+<% // Search form for users to search questions
+if (userID != null) { %>
+    <h2>Search Questions</h2>
+    <form action="questions.jsp" method="get">
+        <input type="text" name="keyword" placeholder="Enter keyword">
+        <input type="submit" value="Search">
+    </form>
+<% } %>
+
+<% // Handling the search query
+String keyword = request.getParameter("keyword");
+String searchQuery = "SELECT * FROM questions ORDER BY questionDate DESC";
+
+// Check if a keyword is provided
+if (keyword != null && !keyword.isEmpty()) {
+    searchQuery = "SELECT * FROM questions WHERE questionText LIKE ? OR subject LIKE ? ORDER BY (answerText IS NOT NULL) DESC, questionDate DESC";
+}
+%>
+
+<% // Display questions based on search query if a keyword is provided
+if (keyword != null && !keyword.isEmpty()) {
+    try {
+        ApplicationDB db = new ApplicationDB();
+        Connection con = db.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(searchQuery);
+        pstmt.setString(1, "%" + keyword + "%");
+        pstmt.setString(2, "%" + keyword + "%");
+        ResultSet rs = pstmt.executeQuery();
+
+        out.println("<table>");
+        out.println("<tr><th>Subject</th><th>Question</th><th>Answer</th><th>Date Asked</th>" + (userID != null ? "<th>Action</th>" : "") + "</tr>");
+        while(rs.next()) {
+            out.println("<tr>");
+            out.println("<td>" + rs.getString("subject") + "</td>");
+            out.println("<td>" + rs.getString("questionText") + "</td>");
+            out.println("<td>");
+            if (rs.getString("answerText") != null) {
+                out.println(rs.getString("answerText"));
+            } else if ("custRep".equals(userRole)) {
+                out.println("<button id='answerBtn_" + rs.getInt("questionID") + "' onclick='toggleAnswerForm(" + rs.getInt("questionID") + ")'>Answer</button>");
+                out.println("<form id='answerForm_" + rs.getInt("questionID") + "' method='post' action='questions.jsp' style='display:none;'>" +
+                        "<input type='hidden' name='answerID' value='" + rs.getInt("questionID") + "'/>" +
+                        "<textarea name='answerText' placeholder='Type your answer here'></textarea>" +
+                        "<input type='submit' value='Submit'/></form>");
+            }
+            out.println("</td>");
+            out.println("<td>" + rs.getTimestamp("questionDate") + "</td>");
+            if (userID != null && userID.equals(rs.getString("customerUsername"))) {
+                out.println("<td><form method='post' action='questions.jsp'><input type='hidden' name='deleteID' value='" + rs.getInt("questionID") + "'/><input type='submit' value='Delete'/></form></td>");
+            }
+            out.println("</tr>");
+        }
+        out.println("</table>");
+
+        db.closeConnection(con);
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+} else {
+    // No keyword provided, do not execute the search
+}
+%>
+
+
+
 <% // Form for regular users to submit new questions
 if (userID != null) { %>
     <h2>Submit a New Question</h2>
@@ -132,12 +197,7 @@ try {
     ApplicationDB db = new ApplicationDB();
     Connection con = db.getConnection();
     PreparedStatement pstmt;
-    if ("custRep".equals(userRole) || "admin".equals(userRole)) {
-        pstmt = con.prepareStatement("SELECT * FROM questions ORDER BY questionDate DESC");
-    } else {
-        pstmt = con.prepareStatement("SELECT * FROM questions WHERE customerUsername = ? ORDER BY questionDate DESC");
-        pstmt.setString(1, userID);
-    }
+    pstmt = con.prepareStatement("SELECT * FROM questions ORDER BY questionDate DESC");
     ResultSet rs = pstmt.executeQuery();
 
     out.println("<table>");

@@ -20,7 +20,7 @@
 		<a href="adminHomePage.jsp">Home</a> |
 		<a href="questions.jsp">Q & A</a> |
 		<a href="createRep.jsp">Create Customer Representative Accounts</a> |
-		<a href="adminHomePage.jsp">Generate Sales Report</a> |
+		<a href="generateSalesReport.jsp">Generate Sales Report</a> |
 		<a href="logout.jsp">Log Out</a>
 	</nav>
 	
