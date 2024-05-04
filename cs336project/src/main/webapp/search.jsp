@@ -100,22 +100,24 @@
 	 	<tr> 
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;"></td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Status</td>
+	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">ID</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Name</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Brand</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Gender</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Size</td>
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Starting Price</td>
+	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Current Price</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Closing Date and Time</td>
 	 	</tr>
 	 	<%while(getSearched.next()){ %>
 	 	<tr>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="viewListing.jsp?listID=<%= getSearched.getInt("listID") %>&brand=<%= getSearched.getString("brand") %>">View</a></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("status")%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("listID")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("name")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("brand")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("gender")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("size")%></td>
-	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= String.format("%.2f", getSearched.getDouble("startingPrice"))%></td>
+	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">$<%= String.format("%.2f", getSearched.getDouble("startingPrice"))%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getSearched.getString("closingDateTime")%></td>
 	 	</tr>
 	 	<% } %>

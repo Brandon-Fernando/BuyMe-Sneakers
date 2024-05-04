@@ -22,7 +22,7 @@
 		}
 		
 		
-		String selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(b.price) as userBid "
+		String selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(b.price) as userBid, cl.listID "
 				+ "FROM places p "
 				+ "INNER JOIN onListing ol ON ol.bidID = p.bidID "
 				+ "INNER JOIN bids b ON b.bidID = ol.bidID "  
@@ -35,7 +35,7 @@
 		ResultSet outBid = ps.executeQuery();
 		
 		
-		selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(ab.bidLimit) as limitNum "
+		selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(ab.bidLimit) as limitNum, cl.listID "
 				+ "FROM places p "
 				+ "INNER JOIN onListing ol ON ol.bidID = p.bidID " 
 				+ "INNER JOIN bids b ON b.bidID = ol.bidID "
@@ -49,7 +49,7 @@
 		ResultSet limitUnder = ps2.executeQuery();
 		
 		
-		selectQuery = "SELECT cl.name, cl.brand "
+		selectQuery = "SELECT cl.name, cl.brand, cl.listID "
 				+ "FROM places p "
 				+ "INNER JOIN onListing ol ON ol.bidID = p.bidID "
 				+ "INNER JOIN bids b ON b.bidID = ol.bidID "
@@ -64,7 +64,7 @@
 		ResultSet winner = ps3.executeQuery();
 		
 		
-		selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(b.price) as userBid "
+		selectQuery = "SELECT cl.name, cl.brand, cl.startingPrice, MAX(b.price) as userBid, cl.listID "
 				+ "FROM places p "
 				+ "INNER JOIN onListing ol ON ol.bidID = p.bidID "
 				+ "INNER JOIN bids b ON b.bidID = ol.bidID "  
@@ -77,7 +77,7 @@
 		ResultSet loser = ps4.executeQuery();
 		
 		
-		selectQuery = "SELECT cl.brand, cl.name, cl.startingPrice "
+		selectQuery = "SELECT cl.brand, cl.name, cl.startingPrice, cl.listID "
 				+ "FROM createListing cl " 
 				+ "INNER JOIN interests i ON cl.name LIKE CONCAT('%', i.interests, '%') "
 				+ "WHERE cl.status = 'Open' AND i.username=?";
@@ -109,8 +109,8 @@
 		%>
 		<tr>
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
-			You have been out bid on the <%=outBid.getString(2) %> <%=outBid.getString(1) %>.
-			<p>Your bid: <%= outBid.getString(4) %> <br> Current Price: <%= outBid.getString(3) %></p>
+			You have been out bid on the <%=outBid.getString(2) %> <%=outBid.getString(1) %> (ID: <%=outBid.getString(5) %>).
+			<p>Your bid: $<%= String.format("%.2f", outBid.getDouble(4)) %> <br> Current Price: $<%= String.format("%.2f", outBid.getDouble(3)) %></p>
 			</td>
 		</tr>
 		<% }%>
@@ -120,8 +120,8 @@
 		%>
 		<tr>
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
-				The current bidding price on the <%=limitUnder.getString(2) %> <%=limitUnder.getString(1) %> is greater than your bid limit.
-				<p>Your Bid Limit: <%= limitUnder.getString(4) %> <br> Current Bidding Price: <%= limitUnder.getString(3) %></p>
+				The current bidding price on the <%=limitUnder.getString(2) %> <%=limitUnder.getString(1) %> (ID: <%=limitUnder.getString(5) %>) is greater than your bid limit.
+				<p>Your Bid Limit: $<%= String.format("%.2f", limitUnder.getDouble(4)) %> <br> Current Bidding Price: $<%= String.format("%.2f", limitUnder.getDouble(3)) %></p>
 			</td>
 		</tr>
 		<%} %>
@@ -131,7 +131,7 @@
 		%>
 		<tr>
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
-			Congrats! You won the <%=winner.getString(2)%> <%=winner.getString(1) %>!
+			Congrats! You won the <%=winner.getString(2)%> <%=winner.getString(1) %> (ID: <%=winner.getString(3) %>)!
 			</td>
 		</tr>
 		<% }%>
@@ -141,7 +141,7 @@
 		%>
 		<tr>
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
-			Sorry, you lost the <%=loser.getString(2)%> <%=loser.getString(1) %>.
+			Sorry, you lost the <%=loser.getString(2)%> <%=loser.getString(1) %> (ID: <%=loser.getString(3) %>).
 			</td>
 		</tr>
 		<%} %>
@@ -152,7 +152,7 @@
 		<tr>
 			<td style="border: 1px solid #dddddd; text-align: center; padding: 8px;">
 			Your interest is now up for auction!
-			<p><%= notifyInterests.getString(1) %> <%=notifyInterests.getString(2) %> $<%= notifyInterests.getString(3) %></p>
+			<p><%= notifyInterests.getString(1) %> <%=notifyInterests.getString(2) %> $<%= String.format("%.2f", notifyInterests.getDouble(3)) %> (ID: <%=notifyInterests.getString(4) %>)</p>
 		</tr>
 		<%} %>
 		
