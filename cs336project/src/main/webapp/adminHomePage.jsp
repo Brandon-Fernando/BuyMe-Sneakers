@@ -50,7 +50,6 @@
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Size</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Starting Price</td>
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Closing Date and Time</td>
-	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Winner?</td>
 	 		
 	 	</tr>
 	 	
@@ -99,7 +98,6 @@
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("size")%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= String.format("%.2f", getListings.getDouble("startingPrice"))%></td>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("closingDateTime")%></td>
- 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("isWinner")%></td>
 	 		
 	 	</tr>
 	 	<%} %>
