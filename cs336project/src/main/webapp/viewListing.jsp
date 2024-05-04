@@ -68,7 +68,7 @@
 		Double ogPrice = null;
 		while(getOGprice.next()){
 			ogPrice = getOGprice.getDouble(1);
-		}
+		} 
 		
 		
 		String highestPriceQuery ="SELECT MAX(b.price) "

@@ -34,6 +34,8 @@
 		PreparedStatement ps = con.prepareStatement(selectQuery);
 		ResultSet getListings = ps.executeQuery();
 		
+		java.sql.Timestamp currentTimestamp = new Timestamp(new java.util.Date().getTime());
+
 		
 	%>
 	<h2>All Listings</h2>
@@ -48,7 +50,17 @@
 	 		<td style="border: 3px solid #dddddd; text-align: left; padding: 8px;">Closing Date and Time</td>
 	 	</tr>
 	 	
-	 <%while(getListings.next()){ %>
+	 <%while(getListings.next()){ 
+		 int listID = getListings.getInt("listID");
+			java.sql.Timestamp closingTimestamp = getListings.getTimestamp("closingDateTime");
+			
+			if(currentTimestamp.compareTo(closingTimestamp) > 0){
+				String updateQuery = "UPDATE createListing SET status = 'Closed' WHERE listID = ?";
+				PreparedStatement ps2 = con.prepareStatement(updateQuery);
+				ps2.setInt(1, listID);
+				ps2.executeUpdate();
+			}		
+	 %>
 	 
 	 	<tr>
 	 		<td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><%= getListings.getString("status")%></td>
