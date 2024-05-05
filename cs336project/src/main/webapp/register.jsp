@@ -14,8 +14,9 @@
 	<div style="text-align: center">
 		<h1>Create Account</h1>
 		<form action="registerAccount.jsp" method="POST">
-			Username: <input type="text" name="username"/> <br/>
-			Password:<input type="password" name="password"/> <br/>
+			Email: <input type="email" name="email" required> <br>
+			Username: <input type="text" name="username" required/> <br/>
+			Password:<input type="password" name="password" required/> <br/>
 			<input type="submit" value="Register" style="width: 16%"/>
 		</form>
 		<br>

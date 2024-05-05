@@ -20,6 +20,7 @@
 		String oldUsername = request.getParameter("username");
 		String newUsername = request.getParameter("newUsername");
 		String newPassword = request.getParameter("newPassword");
+		String newEmail = request.getParameter("newEmail");
 		String delete = request.getParameter("delete");
 		
 		
@@ -61,6 +62,17 @@
 				ps.executeUpdate();
 				
 				response.sendRedirect("viewEditAccounts.jsp?username=" +newUsername);
+				
+			}
+			
+			if(newEmail != null && !newEmail.isBlank()){
+				String updateQuery = "UPDATE users SET email=? WHERE username=?";
+				PreparedStatement ps = con.prepareStatement(updateQuery);
+				ps.setString(1, newEmail);
+				ps.setString(2, oldUsername);
+				ps.executeUpdate();
+				
+				response.sendRedirect("viewEditAccounts.jsp?username=" +oldUsername);
 				
 			}
 			

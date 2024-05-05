@@ -25,18 +25,20 @@
 		//Get parameters from the HTML form at the index.jsp
 		String newUsername = request.getParameter("username");
 		String newPassword = request.getParameter("password");
+		String newEmail = request.getParameter("email");
 		
 
 
 		//Make an insert statement for the Sells table:
-		String insert = "INSERT INTO users(username, password)"
-				+ "VALUES (?, ?)";
+		String insert = "INSERT INTO users(username, password, email)"
+				+ "VALUES (?, ?, ?)";
 		//Create a Prepared SQL statement allowing you to introduce the parameters of the query
 		PreparedStatement ps = con.prepareStatement(insert);
 
 		//Add parameters of the query. Start with 1, the 0-parameter is the INSERT statement itself
 		ps.setString(1, newUsername);
 		ps.setString(2, newPassword);
+		ps.setString(3, newEmail);
 		ps.executeUpdate();
 
 %>

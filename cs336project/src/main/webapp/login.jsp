@@ -14,7 +14,7 @@
 	<div style="text-align: center">
 			<h1>Login</h1>
 			<form action="checkLoginDetails.jsp" method="POST">
-				Username: <input type="text" name="username"/> <br/>
+				Username or Email: <input type="text" name="username"/> <br/>
 				Password:<input type="password" name="password"/> <br/>
 				<input type="submit" value="Login"  style="width: 16%"/>
 			</form>

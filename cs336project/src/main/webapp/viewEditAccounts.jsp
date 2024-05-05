@@ -23,10 +23,10 @@
 		String updatedPassword = request.getParameter("password");
 		
 		
-		String query = "SELECT password FROM users WHERE username=?";
+		String query = "SELECT password, email FROM users WHERE username=?";
 		PreparedStatement ps = con.prepareStatement(query);
 		ps.setString(1, username);
-		ResultSet getPassword = ps.executeQuery();
+		ResultSet getInfo = ps.executeQuery();
 		
 		
 		
@@ -42,11 +42,14 @@
 	
 	
 	<div style="text-align: center">
+		
 		Current Username: <strong><%=username %></strong>
 		<br>
-		<%while(getPassword.next()){
-			 if(updatedPassword == null || updatedPassword.equals("")){ %>
-				Current Password: <strong><%=getPassword.getString(1) %></strong>
+		<%while(getInfo.next()){ %>
+			 Current Email: <strong><%=getInfo.getString(2) %></strong> <br>
+			 
+			 <%if(updatedPassword == null || updatedPassword.equals("")){ %>
+				Current Password: <strong><%=getInfo.getString(1) %></strong>
 		<%}else{ %> 
 				Current Password: <strong><%=updatedPassword %></strong>
 		<%}
@@ -57,6 +60,8 @@
 	<div style="text-align: center">
 		<form action="checkEditAccount.jsp?username=<%=username %>" method="POST">
 			Update Username: <input type="text" name="newUsername"><input type="submit" value="Update">
+			<br> <br>
+			Update Email: <input type="email" name="newEmail"><input type="submit" value="Update">
 			<br> <br>
 			Update Password: <input type="text" name="newPassword"><input type="submit" value="Update">
 		</form>
